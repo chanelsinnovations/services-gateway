@@ -10,12 +10,6 @@ app.use(express.json());
 
 app.use(morgan("dev"));
 
-app.use(routes);
-
-app.use(isValidToken);
-
-app.use(isValidClient);
-
 app.get("/", (req: Request, res: Response) => {
   try {
     res.status(200).json({
@@ -25,6 +19,12 @@ app.get("/", (req: Request, res: Response) => {
     console.log(error);
   }
 });
+
+app.use(routes);
+
+app.use(isValidToken);
+
+app.use(isValidClient);
 
 app.use("*", (req: Request, res: Response) => {
   res.status(404).json({
