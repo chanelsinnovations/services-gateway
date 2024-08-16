@@ -34,12 +34,37 @@ const isValidClient = async (
       });
     }
 
+    if (clienttype == "saas") {
+      const token = req.headers["authorization"]?.split(" ")[1];
+
+      console.log(
+        process.env["saas_user_url"] + url,
+        "url",
+        req.method,
+        "method"
+      );
+      let result = await axios({
+        method,
+        url: process.env["saas_user_url"] + url,
+        data: ["POST", "PUT", "PATCH"].includes(method) ? req.body : undefined,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(result.status, "statu");
+
+      return res.status(200).json({
+        ...result.data,
+      });
+    }
     // handle other x-client-types
 
     return res.status(410).json({
       message: "Unknown client type",
     });
   } catch (error: any) {
+    console.log(error.message, "error");
     // Handle errors
     if (error.response) {
       return res.status(error.response.status).json({

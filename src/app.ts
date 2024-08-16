@@ -2,12 +2,15 @@ import express, { Response, Request, Express } from "express";
 import isValidClient from "./middleware/isValidClient";
 import morgan from "morgan";
 import { isValidToken } from "./middleware/isValidtoken";
+import { routes } from "./routes";
 
 const app: Express = express();
 
 app.use(express.json());
 
 app.use(morgan("dev"));
+
+app.use(routes);
 
 app.use(isValidToken);
 
